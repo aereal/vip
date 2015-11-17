@@ -22,8 +22,8 @@ TBD
 `vip` **does not**:
 
 * Manage `rtp`
-* Supports lazy loading
-* Takes care of dependencies
+* Support lazy loading
+* Take care of dependencies
 
 ## Requirement
 
