@@ -1,4 +1,4 @@
-VERSION = $$(git describe --tags --always --dirty)-$$(git name-rev --name-only HEAD)
+VERSION = $$(git name-rev --name-only HEAD)-$$(git describe --tags --always --dirty)
 BUILD_LDFLAGS = "-X main.Version=$(VERSION)"
 BIN = vip
 BUILD_DIR = ./build
