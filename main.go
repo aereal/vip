@@ -8,7 +8,21 @@ import (
 
 var Version string
 
+var pluginsFile string
+
 var Commands = []cli.Command{
+	commandInstall,
+}
+
+var commandInstall = cli.Command{
+	Name:   "install",
+	Usage:  "Install plugins",
+	Action: doInstall,
+}
+
+func doInstall(c *cli.Context) {
+	recipe := NewRecipeFromManifestJSON(pluginsFile)
+	BatchInstall(recipe)
 }
 
 func main() {
@@ -18,6 +32,7 @@ func main() {
 	app.Author = "aereal"
 	app.Commands = Commands
 
+	pluginsFile = "plugins.json" // TODO
+
 	app.Run(os.Args)
 }
-
