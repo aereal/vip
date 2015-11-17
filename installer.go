@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 )
 
-func install(plugin *Plugin, c chan int) {
+func install(plugin *Plugin, pathPrefix string, c chan int) {
 	log.Printf("Install %s ...", plugin.Name)
-	dest := filepath.Join("plugins", plugin.Path())
+	dest := filepath.Join(pathPrefix, plugin.Path())
 	_, err := os.Stat(dest)
 	if err == nil {
 		log.Printf("Already exists: %v", dest)
@@ -19,12 +19,12 @@ func install(plugin *Plugin, c chan int) {
 	c <- 1
 }
 
-func BatchInstall(recipe Recipe) {
+func BatchInstall(recipe Recipe, pathPrefix string) {
 	n := recipe.Size()
 	c := make(chan int, n)
 	for k := range recipe {
 		plugin := recipe.ByName(k)
-		go install(plugin, c)
+		go install(plugin, pathPrefix, c)
 	}
 	for i := 0; i < n; i++ {
 		<-c

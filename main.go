@@ -14,6 +14,11 @@ var CommonFlags = []cli.Flag{
 		Value: "plugins.json",
 		Usage: "",
 	},
+	cli.StringFlag{
+		Name:  "prefix",
+		Value: os.ExpandEnv("$HOME/.vim/bundle"),
+		Usage: "Custom prefix of installation path",
+	},
 }
 
 var Commands = []cli.Command{
@@ -29,7 +34,7 @@ var commandInstall = cli.Command{
 
 func doInstall(c *cli.Context) {
 	recipe := NewRecipeFromManifestJSON(c.String("manifest"))
-	BatchInstall(recipe)
+	BatchInstall(recipe, c.String("prefix"))
 }
 
 func main() {
