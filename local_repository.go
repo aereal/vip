@@ -10,9 +10,7 @@ type LocalRepository struct {
 	Path string
 }
 
-type LocalRepositoryIndex struct {
-	repos []LocalRepository
-}
+type LocalRepositoryIndex []LocalRepository
 
 func NewLocalRepositoryIndexFromPrefix(prefix string) (index LocalRepositoryIndex, err error) {
 	pattern := filepath.Join(prefix, "*")
@@ -26,7 +24,7 @@ func NewLocalRepositoryIndexFromPrefix(prefix string) (index LocalRepositoryInde
 		if err != nil || !fi.IsDir() || strings.HasPrefix(fi.Name(), ".") {
 			continue
 		}
-		index.repos = append(index.repos, LocalRepository{Path: dir})
+		index = append(index, LocalRepository{Path: dir})
 	}
 	return
 }
