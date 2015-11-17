@@ -50,7 +50,7 @@ func doInstall(c *cli.Context) {
 }
 
 func doList(c *cli.Context) {
-	index, err := NewReceiptIndexFromPrefix(c.String("prefix"))
+	index, err := NewLocalRepositoryIndexFromPrefix(c.String("prefix"))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -6,15 +6,15 @@ import (
 	"strings"
 )
 
-type Receipt struct {
-	Directory string
+type LocalRepository struct {
+	Path string
 }
 
-type ReceiptIndex struct {
-	receipts []Receipt
+type LocalRepositoryIndex struct {
+	repos []LocalRepository
 }
 
-func NewReceiptIndexFromPrefix(prefix string) (index ReceiptIndex, err error) {
+func NewLocalRepositoryIndexFromPrefix(prefix string) (index LocalRepositoryIndex, err error) {
 	pattern := filepath.Join(prefix, "*")
 	matches, err := filepath.Glob(pattern)
 	if err != nil {
@@ -26,7 +26,7 @@ func NewReceiptIndexFromPrefix(prefix string) (index ReceiptIndex, err error) {
 		if err != nil || !fi.IsDir() || strings.HasPrefix(fi.Name(), ".") {
 			continue
 		}
-		index.receipts = append(index.receipts, Receipt{Directory: dir})
+		index.repos = append(index.repos, LocalRepository{Path: dir})
 	}
 	return
 }
