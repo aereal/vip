@@ -14,3 +14,6 @@ build: deps
 
 fmt:
 	gofmt -w .
+
+test: deps
+	go test ./...
