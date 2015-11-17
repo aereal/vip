@@ -24,6 +24,7 @@ var CommonFlags = []cli.Flag{
 
 var Commands = []cli.Command{
 	commandInstall,
+	commandList,
 }
 
 var commandInstall = cli.Command{
@@ -33,12 +34,27 @@ var commandInstall = cli.Command{
 	Flags:  CommonFlags,
 }
 
+var commandList = cli.Command{
+	Name:   "list",
+	Usage:  "List installed plugins",
+	Action: doList,
+	Flags:  CommonFlags,
+}
+
 func doInstall(c *cli.Context) {
 	recipe, err := NewRecipeFromManifestJSON(c.String("manifest"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	BatchInstall(recipe, c.String("prefix"))
+}
+
+func doList(c *cli.Context) {
+	index, err := NewReceiptIndexFromPrefix(c.String("prefix"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%v", index)
 }
 
 func main() {
