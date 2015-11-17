@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 )
 
 type PluginName string
@@ -17,11 +18,15 @@ type Plugin struct {
 
 func (plugin *Plugin) Destination() string {
 	base := path.Base(plugin.URL)
-	return "plugins/" + base
+	return "plugins/" + humanish(base)
 }
 
 func NewPlugin(name PluginName, url string) *Plugin {
 	return &Plugin{Name: name, URL: url}
+}
+
+func humanish(s string) string {
+	return strings.Replace(s, ".git", "", 1)
 }
 
 // インストールしたいプラグインを持つ
