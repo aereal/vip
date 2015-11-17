@@ -2,6 +2,12 @@
 
 Vim plugin manager
 
+**Caution: This software is still like a sketch. API or any design may change without notice.**
+
+## Usage
+
+TBD
+
 ## Philosophy
 
 `vip` **does**:
@@ -18,3 +24,26 @@ Vim plugin manager
 * Manage `rtp`
 * Supports lazy loading
 * Takes care of dependencies
+
+## Requirement
+
+* Go
+* make
+
+## Build
+
+```sh
+make # Install dependencies and build from source
+```
+
+## Test
+
+To run tests:
+
+```sh
+make test
+```
+
+## Author
+
+aereal
