@@ -30,4 +30,8 @@ func TestNewRecipeFromManifestJSON(t *testing.T) {
 	recipe, err = NewRecipeFromManifestJSON("test/assets/valid-plugins.json")
 	Expect(err).To(BeNil())
 	Expect(recipe).NotTo(BeNil())
+
+	recipe, err = NewRecipeFromManifestJSON("test/assets/broken.json")
+	Expect(err).NotTo(BeNil())
+	Expect(recipe).To(BeNil())
 }
