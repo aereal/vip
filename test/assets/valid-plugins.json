@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    {
+      "name": "colors-magica",
+      "url": "https://github.com/aereal/vim-colors-magica"
+    }
+  ]
+}

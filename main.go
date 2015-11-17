@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -33,7 +34,10 @@ var commandInstall = cli.Command{
 }
 
 func doInstall(c *cli.Context) {
-	recipe := NewRecipeFromManifestJSON(c.String("manifest"))
+	recipe, err := NewRecipeFromManifestJSON(c.String("manifest"))
+	if err != nil {
+		log.Fatal(err)
+	}
 	BatchInstall(recipe, c.String("prefix"))
 }
 

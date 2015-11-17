@@ -18,3 +18,16 @@ func TestPlugin(t *testing.T) {
 	plugin = NewPlugin("test-plugin", "https://github.com/example/test-plugin.git")
 	Expect(plugin.Path()).To(Equal("test-plugin"))
 }
+
+func TestNewRecipeFromManifestJSON(t *testing.T) {
+	RegisterTestingT(t)
+
+	var (
+		recipe Recipe
+		err    error
+	)
+
+	recipe, err = NewRecipeFromManifestJSON("test/assets/valid-plugins.json")
+	Expect(err).To(BeNil())
+	Expect(recipe).NotTo(BeNil())
+}

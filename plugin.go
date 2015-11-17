@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io"
-	"log"
 	"os"
 	"path"
 	"strings"
@@ -53,22 +52,23 @@ type RecipeManifest struct {
 	Plugins []*Plugin `json:"plugins"`
 }
 
-func NewRecipeFromManifestJSON(path string) Recipe {
-	file, e := os.Open(path)
-	if e != nil {
-		log.Fatal(e)
+func NewRecipeFromManifestJSON(path string) (recipe Recipe, err error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return
 	}
 	dec := json.NewDecoder(file)
 	var manifest RecipeManifest
 	for {
-		if err := dec.Decode(&manifest); err == io.EOF {
-			recipe := NewRecipe()
+		if err = dec.Decode(&manifest); err == io.EOF {
+			recipe = NewRecipe()
+			err = nil
 			for _, p := range manifest.Plugins {
 				recipe.Add(p)
 			}
-			return recipe
+			return
 		} else if err != nil {
-			log.Fatal(err)
+			return
 		}
 	}
 }
