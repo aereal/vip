@@ -1,14 +1,18 @@
 package main
 
 import (
+	"encoding/json"
+	"io"
+	"log"
+	"os"
 	"path"
 )
 
 type PluginName string
 
 type Plugin struct {
-	Name PluginName
-	URL  string
+	Name PluginName `json:"name"`
+	URL  string     `json:"url"`
 }
 
 func (plugin *Plugin) Destination() string {
@@ -38,4 +42,29 @@ func (recipe Recipe) ByName(name PluginName) *Plugin {
 
 func NewRecipe() Recipe {
 	return Recipe{}
+}
+
+// { "plugins": [{"name": "my-plugin", "url": "https://github.com/you/my-plugin"}, ...] }
+type RecipeManifest struct {
+	Plugins []*Plugin `json:"plugins"`
+}
+
+func NewRecipeFromManifestJSON(path string) Recipe {
+	file, e := os.Open(path)
+	if e != nil {
+		log.Fatal(e)
+	}
+	dec := json.NewDecoder(file)
+	var manifest RecipeManifest
+	for {
+		if err := dec.Decode(&manifest); err == io.EOF {
+			recipe := NewRecipe()
+			for _, p := range manifest.Plugins {
+				recipe.Add(p)
+			}
+			return recipe
+		} else if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
