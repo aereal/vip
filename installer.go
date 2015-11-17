@@ -3,11 +3,12 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func install(plugin *Plugin, c chan int) {
 	log.Printf("Install %s ...", plugin.Name)
-	dest := "plugins/" + plugin.Path()
+	dest := filepath.Join("plugins", plugin.Path())
 	_, err := os.Stat(dest)
 	if err == nil {
 		log.Printf("Already exists: %v", dest)
