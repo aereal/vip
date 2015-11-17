@@ -13,8 +13,8 @@ func TestPlugin(t *testing.T) {
 	)
 
 	plugin = NewPlugin("test-plugin", "https://github.com/example/test-plugin")
-	Expect(plugin.Destination()).To(Equal("plugins/test-plugin"))
+	Expect(plugin.Path()).To(Equal("test-plugin"))
 
 	plugin = NewPlugin("test-plugin", "https://github.com/example/test-plugin.git")
-	Expect(plugin.Destination()).To(Equal("plugins/test-plugin"))
+	Expect(plugin.Path()).To(Equal("test-plugin"))
 }

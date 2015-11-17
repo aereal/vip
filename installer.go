@@ -7,13 +7,14 @@ import (
 
 func install(plugin *Plugin, c chan int) {
 	log.Printf("Install %s ...", plugin.Name)
-	_, err := os.Stat(plugin.Destination())
+	dest := "plugins/" + plugin.Path()
+	_, err := os.Stat(dest)
 	if err == nil {
-		log.Printf("Already exists: %v", plugin.Destination())
+		log.Printf("Already exists: %v", dest)
 		c <- 1
 		return
 	}
-	run("git", "clone", "--depth", "1", plugin.URL, plugin.Destination())
+	run("git", "clone", "--depth", "1", plugin.URL, dest)
 	c <- 1
 }
 

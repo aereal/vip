@@ -16,9 +16,8 @@ type Plugin struct {
 	URL  string     `json:"url"`
 }
 
-func (plugin *Plugin) Destination() string {
-	base := path.Base(plugin.URL)
-	return "plugins/" + humanish(base)
+func (plugin *Plugin) Path() string {
+	return humanish(path.Base(plugin.URL))
 }
 
 func NewPlugin(name PluginName, url string) *Plugin {
