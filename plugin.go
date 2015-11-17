@@ -7,24 +7,17 @@ import (
 type PluginName string
 
 type Plugin struct {
-	name PluginName
-	url  string
+	Name PluginName
+	URL  string
 }
 
-func (plugin *Plugin) Name() PluginName {
-	return plugin.name
-}
-
-func (plugin *Plugin) URL() string {
-	return plugin.url
-}
 func (plugin *Plugin) Destination() string {
-	base := path.Base(plugin.URL())
+	base := path.Base(plugin.URL)
 	return "plugins/" + base
 }
 
 func NewPlugin(name PluginName, url string) *Plugin {
-	return &Plugin{name: name, url: url}
+	return &Plugin{Name: name, URL: url}
 }
 
 // インストールしたいプラグインを持つ
@@ -32,7 +25,7 @@ func NewPlugin(name PluginName, url string) *Plugin {
 type Recipe map[PluginName]*Plugin
 
 func (recipe Recipe) Add(plugin *Plugin) {
-	recipe[plugin.Name()] = plugin
+	recipe[plugin.Name] = plugin
 }
 
 func (recipe Recipe) Size() int {

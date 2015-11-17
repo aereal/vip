@@ -6,14 +6,14 @@ import (
 )
 
 func Install(plugin *Plugin, c chan int) {
-	log.Printf("Install %s ...", plugin.Name())
+	log.Printf("Install %s ...", plugin.Name)
 	_, err := os.Stat(plugin.Destination())
 	if err == nil {
 		log.Printf("Already exists: %v", plugin.Destination())
 		c <- 1
 		return
 	}
-	run("git", "clone", "--depth", "1", plugin.URL(), plugin.Destination())
+	run("git", "clone", "--depth", "1", plugin.URL, plugin.Destination())
 	c <- 1
 }
 
