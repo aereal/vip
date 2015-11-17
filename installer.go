@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func Install(plugin *Plugin, c chan int) {
+func install(plugin *Plugin, c chan int) {
 	log.Printf("Install %s ...", plugin.Name)
 	_, err := os.Stat(plugin.Destination())
 	if err == nil {
@@ -22,7 +22,7 @@ func BatchInstall(recipe Recipe) {
 	c := make(chan int, n)
 	for k := range recipe {
 		plugin := recipe.ByName(k)
-		go Install(plugin, c)
+		go install(plugin, c)
 	}
 	for i := 0; i < n; i++ {
 		<-c
