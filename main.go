@@ -54,7 +54,9 @@ func doList(c *cli.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%v", index)
+	for _, localrepo := range index {
+		println(localrepo.Name)
+	}
 }
 
 func main() {

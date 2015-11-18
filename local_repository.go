@@ -7,6 +7,7 @@ import (
 )
 
 type LocalRepository struct {
+	Name string
 	Path string
 }
 
@@ -24,7 +25,7 @@ func NewLocalRepositoryIndexFromPrefix(prefix string) (index LocalRepositoryInde
 		if err != nil || !fi.IsDir() || strings.HasPrefix(fi.Name(), ".") {
 			continue
 		}
-		index = append(index, LocalRepository{Path: dir})
+		index = append(index, LocalRepository{Name: filepath.Base(dir), Path: dir})
 	}
 	return
 }
