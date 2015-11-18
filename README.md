@@ -1,4 +1,4 @@
-# vip [![wercker status](https://app.wercker.com/status/e8df97161d75205b16e7e0656f3b1022/s "wercker status")](https://app.wercker.com/project/bykey/e8df97161d75205b16e7e0656f3b1022)
+# vip [![wercker status](https://app.wercker.com/status/e8df97161d75205b16e7e0656f3b1022/s "wercker status")](https://app.wercker.com/project/bykey/e8df97161d75205b16e7e0656f3b1022) [![Coverage Status](https://coveralls.io/repos/aereal/vip/badge.svg?branch=HEAD&service=github)](https://coveralls.io/github/aereal/vip?branch=HEAD)
 
 Vim plugin manager
 
