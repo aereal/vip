@@ -1,4 +1,4 @@
-# vip
+# vip [![wercker status](https://app.wercker.com/status/e8df97161d75205b16e7e0656f3b1022/s "wercker status")](https://app.wercker.com/project/bykey/e8df97161d75205b16e7e0656f3b1022)
 
 Vim plugin manager
 
