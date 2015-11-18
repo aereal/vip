@@ -1,0 +1,22 @@
+box: tcnksm/gox
+build:
+  steps:
+    - setup-go-workspace
+    - script:
+        name: deps
+        code: make deps
+    - tcnksm/goveralls:
+        token: $COVERALLS_REPO_TOKEN
+    - tcnksm/gox:
+        os: "darwin linux"
+        arch: "386 amd64"
+        ldflags: -X main.Version="$(git name-rev --name-only HEAD)-$(git describe --tags --always --dirty)"
+    - tcnksm/zip:
+      input: ${WERCKER_OUTPUT_DIR}/pkg
+      output: ${WERCKER_OUTPUT_DIR}/dist
+deploy:
+  steps:
+    - tcnksm/ghr:
+        token: $GITHUB_TOKEN
+        input: dist
+        replace: true
