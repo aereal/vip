@@ -19,11 +19,11 @@ func install(plugin *Plugin, pathPrefix string, c chan int) {
 	c <- 1
 }
 
-func BatchInstall(recipe Recipe, pathPrefix string) {
-	n := recipe.Size()
+func BatchInstall(recipe *Recipe, pathPrefix string) {
+  plugins := recipe.Plugins()
+	n := len(plugins)
 	c := make(chan int, n)
-	for k := range recipe {
-		plugin := recipe.ByName(k)
+	for _, plugin := range plugins {
 		go install(plugin, pathPrefix, c)
 	}
 	for i := 0; i < n; i++ {
