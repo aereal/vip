@@ -29,22 +29,26 @@ func humanish(s string) string {
 
 // インストールしたいプラグインを持つ
 // ユーザが書いた JSON かなにかから作られる予定
-type Recipe map[PluginName]*Plugin
-
-func (recipe Recipe) Add(plugin *Plugin) {
-	recipe[plugin.Name] = plugin
+type Recipe struct {
+	registryByName map[PluginName]*Plugin
 }
 
-func (recipe Recipe) Size() int {
-	return len(recipe)
+func (recipe *Recipe) Plugins() []*Plugin {
+	var plugins []*Plugin
+	for _, v := range recipe.registryByName {
+		plugins = append(plugins, v)
+	}
+	return plugins
 }
 
-func (recipe Recipe) ByName(name PluginName) *Plugin {
-	return recipe[name]
+func (recipe *Recipe) Add(plugin *Plugin) {
+	recipe.registryByName[plugin.Name] = plugin
 }
 
-func NewRecipe() Recipe {
-	return Recipe{}
+func NewRecipe() *Recipe {
+	return &Recipe{
+		registryByName: map[PluginName]*Plugin{},
+	}
 }
 
 // { "plugins": [{"name": "my-plugin", "url": "https://github.com/you/my-plugin"}, ...] }
@@ -52,7 +56,7 @@ type RecipeManifest struct {
 	Plugins []*Plugin `json:"plugins"`
 }
 
-func NewRecipeFromManifestJSON(path string) (recipe Recipe, err error) {
+func NewRecipeFromManifestJSON(path string) (recipe *Recipe, err error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return

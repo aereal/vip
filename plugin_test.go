@@ -23,7 +23,7 @@ func TestNewRecipeFromManifestJSON(t *testing.T) {
 	RegisterTestingT(t)
 
 	var (
-		recipe Recipe
+		recipe *Recipe
 		err    error
 	)
 
