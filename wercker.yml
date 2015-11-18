@@ -11,3 +11,12 @@ build:
         os: "darwin linux"
         arch: "386 amd64"
         ldflags: -X main.Version="$(git name-rev --name-only HEAD)-$(git describe --tags --always --dirty)"
+    - tcnksm/zip:
+      input: ${WERCKER_OUTPUT_DIR}/pkg
+      output: ${WERCKER_OUTPUT_DIR}/dist
+deploy:
+  steps:
+    - tcnksm/ghr:
+        token: $GITHUB_TOKEN
+        input: dist
+        replace: true
