@@ -20,7 +20,7 @@ func install(plugin *Plugin, pathPrefix string, c chan int) {
 }
 
 func BatchInstall(recipe *Recipe, pathPrefix string) {
-  plugins := recipe.Plugins()
+	plugins := recipe.Plugins()
 	n := len(plugins)
 	c := make(chan int, n)
 	for _, plugin := range plugins {
