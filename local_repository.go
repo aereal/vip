@@ -11,6 +11,10 @@ type LocalRepository struct {
 	Path string
 }
 
+func (lr LocalRepository) GitDir() string {
+	return filepath.Join(lr.Path, ".git")
+}
+
 type LocalRepositoryIndex []LocalRepository
 
 func NewLocalRepositoryIndexFromPrefix(prefix string) (index LocalRepositoryIndex, err error) {
