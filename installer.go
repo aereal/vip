@@ -4,29 +4,29 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
-func install(plugin *Plugin, pathPrefix string, c chan int) {
+func install(plugin *Plugin, pathPrefix string) {
 	log.Printf("Install %s ...", plugin.Name)
 	dest := filepath.Join(pathPrefix, plugin.Path())
 	_, err := os.Stat(dest)
 	if err == nil {
 		log.Printf("Already exists: %v", dest)
-		c <- 1
 		return
 	}
 	run("git", "clone", "--depth", "1", plugin.URL, dest)
-	c <- 1
 }
 
 func BatchInstall(recipe *Recipe, pathPrefix string) {
 	plugins := recipe.Plugins()
-	n := len(plugins)
-	c := make(chan int, n)
+	var wg sync.WaitGroup
 	for _, plugin := range plugins {
-		go install(plugin, pathPrefix, c)
+		wg.Add(1)
+		go func(p *Plugin) {
+			defer wg.Done()
+			install(p, pathPrefix)
+		}(plugin)
 	}
-	for i := 0; i < n; i++ {
-		<-c
-	}
+	wg.Wait()
 }
