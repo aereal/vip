@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 type Environment []*Deployment
@@ -14,13 +15,19 @@ func NewEnvironment(prefixPath string) (Environment, error) {
 	if err != nil {
 		return nil, err
 	}
+	var wg sync.WaitGroup
 	for _, localrepo := range index {
-		deploy, err := NewDeploymentFromLocalRepository(localrepo)
-		if err != nil {
-			continue
-		}
-		env = append(env, deploy)
+		wg.Add(1)
+		go func(repo LocalRepository) {
+			defer wg.Done()
+			deploy, err := NewDeploymentFromLocalRepository(repo)
+			if err != nil {
+				return
+			}
+			env = append(env, deploy)
+		}(localrepo)
 	}
+	wg.Wait()
 
 	return env, nil
 }
