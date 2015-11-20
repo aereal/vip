@@ -50,15 +50,11 @@ func doInstall(c *cli.Context) {
 }
 
 func doList(c *cli.Context) {
-	index, err := NewLocalRepositoryIndexFromPrefix(c.String("prefix"))
+	env, err := NewEnvironment(c.String("prefix"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, localrepo := range index {
-		deploy, err := NewDeploymentFromLocalRepository(localrepo)
-		if err != nil {
-			continue
-		}
+	for _, deploy := range env {
 		println(deploy.Format())
 	}
 }
