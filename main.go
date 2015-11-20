@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -56,11 +55,11 @@ func doList(c *cli.Context) {
 		log.Fatal(err)
 	}
 	for _, localrepo := range index {
-		rev, err := capture("git", "--git-dir", localrepo.GitDir(), "rev-parse", "HEAD")
+		deploy, err := NewDeploymentFromLocalRepository(localrepo)
 		if err != nil {
 			continue
 		}
-		fmt.Printf("%s (revision: %s)\n", localrepo.Name, rev)
+		println(deploy.Format())
 	}
 }
 
