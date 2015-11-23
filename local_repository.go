@@ -7,8 +7,8 @@ import (
 )
 
 type LocalRepository struct {
-	Name string
-	Path string
+	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 func (lr LocalRepository) GitDir() string {
