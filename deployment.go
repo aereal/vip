@@ -33,8 +33,8 @@ func NewEnvironment(prefixPath string) (Environment, error) {
 }
 
 type Deployment struct {
-	repo     *LocalRepository
-	revision string
+	Repo     *LocalRepository `json:"repo"`
+	Revision string           `json:"rev"`
 }
 
 func NewDeploymentFromLocalRepository(repo LocalRepository) (*Deployment, error) {
@@ -42,9 +42,9 @@ func NewDeploymentFromLocalRepository(repo LocalRepository) (*Deployment, error)
 	if err != nil {
 		return nil, err
 	}
-	return &Deployment{repo: &repo, revision: rev}, nil
+	return &Deployment{Repo: &repo, Revision: rev}, nil
 }
 
 func (d *Deployment) Format() string {
-	return fmt.Sprintf("%s (revision: %s)", d.repo.Name, d.revision)
+	return fmt.Sprintf("%s (revision: %s)", d.Repo.Name, d.Revision)
 }
