@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"sync"
 )
 
@@ -30,6 +32,13 @@ func NewEnvironment(prefixPath string) (Environment, error) {
 	wg.Wait()
 
 	return env, nil
+}
+
+func (e Environment) Lock(lockFileName string) (err error) {
+	file, err := os.OpenFile(lockFileName, os.O_WRONLY|os.O_CREATE, 0666)
+	enc := json.NewEncoder(file)
+	err = enc.Encode(e)
+	return
 }
 
 type Deployment struct {
