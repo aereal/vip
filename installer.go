@@ -30,3 +30,17 @@ func BatchInstall(recipe *Recipe, pathPrefix string) {
 	}
 	wg.Wait()
 }
+
+func Checkout(env Environment) error {
+	deployments := env
+	var wg sync.WaitGroup
+	for _, deploy := range deployments {
+		wg.Add(1)
+		go func(d *Deployment) {
+			defer wg.Done()
+			d.Repo.RunGit("checkout", "-q", d.Revision)
+		}(deploy)
+	}
+	wg.Wait()
+	return nil
+}

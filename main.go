@@ -55,11 +55,22 @@ var commandLock = cli.Command{
 }
 
 func doInstall(c *cli.Context) {
-	recipe, err := NewRecipeFromManifestJSON(c.String("manifest"))
-	if err != nil {
-		log.Fatal(err)
+	if _, err := os.Stat(c.String("lockfile")); err != nil && os.IsNotExist(err) {
+		log.Println("---> Install from manifest")
+		recipe, err := NewRecipeFromManifestJSON(c.String("manifest"))
+		if err != nil {
+			log.Fatal(err)
+		}
+		BatchInstall(recipe, c.String("prefix"))
+	} else {
+		log.Println("---> Install from lock file")
+		env, err := NewEnvironment(c.String("prefix"))
+		if err != nil {
+			log.Fatal(err)
+		}
+		Checkout(env)
+		log.Println("---> Done")
 	}
-	BatchInstall(recipe, c.String("prefix"))
 }
 
 func doList(c *cli.Context) {
