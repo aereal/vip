@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -21,11 +20,17 @@ var CommonFlags = []cli.Flag{
 		Value: os.ExpandEnv("$HOME/.vim/bundle"),
 		Usage: "Custom prefix of installation path",
 	},
+	cli.StringFlag{
+		Name:  "lockfile",
+		Value: "plugins.lock.json",
+		Usage: "Lock file",
+	},
 }
 
 var Commands = []cli.Command{
 	commandInstall,
 	commandList,
+	commandLock,
 }
 
 var commandInstall = cli.Command{
@@ -42,6 +47,13 @@ var commandList = cli.Command{
 	Flags:  CommonFlags,
 }
 
+var commandLock = cli.Command{
+	Name:   "lock",
+	Usage:  "Output lock file",
+	Action: doLock,
+	Flags:  CommonFlags,
+}
+
 func doInstall(c *cli.Context) {
 	recipe, err := NewRecipeFromManifestJSON(c.String("manifest"))
 	if err != nil {
@@ -51,17 +63,24 @@ func doInstall(c *cli.Context) {
 }
 
 func doList(c *cli.Context) {
-	index, err := NewLocalRepositoryIndexFromPrefix(c.String("prefix"))
+	env, err := NewEnvironment(c.String("prefix"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, localrepo := range index {
-		rev, err := capture("git", "--git-dir", localrepo.GitDir(), "rev-parse", "HEAD")
-		if err != nil {
-			continue
-		}
-		fmt.Printf("%s (revision: %s)\n", localrepo.Name, rev)
+	for _, deploy := range env {
+		println(deploy.Format())
 	}
+}
+
+func doLock(c *cli.Context) {
+	env, err := NewEnvironment(c.String("prefix"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err = env.Lock(c.String("lockfile")); err != nil {
+		log.Fatal(err)
+	}
+	println("Done")
 }
 
 func main() {
