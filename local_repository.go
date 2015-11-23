@@ -11,8 +11,22 @@ type LocalRepository struct {
 	Path string `json:"path"`
 }
 
-func (lr LocalRepository) GitDir() string {
-	return filepath.Join(lr.Path, ".git")
+func (lr LocalRepository) git(args ...string) []string {
+	cmdArgs := []string{
+		"-C", lr.Path, "--git-dir", "./.git", "--work-tree", "./",
+	}
+	cmdArgs = append(cmdArgs, args...)
+	return cmdArgs
+}
+
+func (lr LocalRepository) RunGit(args ...string) error {
+	cmd := lr.git(args...)
+	return run("git", cmd...)
+}
+
+func (lr LocalRepository) CaptureGit(args ...string) (string, error) {
+	cmd := lr.git(args...)
+	return capture("git", cmd...)
 }
 
 type LocalRepositoryIndex []LocalRepository

@@ -17,6 +17,5 @@ func TestNewLocalRepositoryIndexFromPrefix(t *testing.T) {
 	Expect(index).NotTo(BeNil())
 	Expect(index[0].Name).To(Equal("vim-plugin-1"))
 	Expect(index[0].Path).To(Equal("test/assets/bundle/vim-plugin-1"))
-	Expect(index[0].GitDir()).To(Equal("test/assets/bundle/vim-plugin-1/.git"))
 	Expect(err).To(BeNil())
 }

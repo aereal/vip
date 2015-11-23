@@ -47,7 +47,7 @@ type Deployment struct {
 }
 
 func NewDeploymentFromLocalRepository(repo LocalRepository) (*Deployment, error) {
-	rev, err := capture("git", "--git-dir", repo.GitDir(), "rev-parse", "HEAD")
+	rev, err := repo.CaptureGit("rev-parse", "HEAD")
 	if err != nil {
 		return nil, err
 	}
